@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * JUnit tests for the point class.
+ * JUnit tests for the Point class.
  * Test determines if x and y coordinates are implmented correctly using
  * assertions.
  */
