@@ -1,5 +1,7 @@
 package main;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -17,7 +19,7 @@ import java.util.List;
 public class ConvexHull {
     
     /**
-     * Find the "east" most point (the point with the largest x value) in the hull .
+     * Mehod that finds the "east" most point (the point with the largest x value) in the hull .
      * 
      * @param hull A list of points from a Convex Hull.
      * @return The index of the "east" most point in the hull.
@@ -33,7 +35,7 @@ public class ConvexHull {
     }
 
     /**
-     * Find the "west" most point (the point with the smallest x value) in the hull .
+     * Method that finds the "west" most point (the point with the smallest x value) in the hull .
      * 
      * @param hull A list of points from a Convex Hull.
      * @return The index of the "west" most point in the hull.
@@ -48,4 +50,16 @@ public class ConvexHull {
         return index;
     }
 
+    /**
+     * Method that finds the Convex Hull of a given set of P of n points.
+     * @param points
+     * @return
+     */
+    public static List<Point> convexHull(Point[] points) {
+
+        // Sort the n points by x coords
+        Arrays.sort(points, Comparator.comparingInt(p -> p.x));
+
+        return points;
+    }
 }
