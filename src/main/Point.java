@@ -4,7 +4,7 @@ package main;
  * Represents a point in 2D plane with x and y coordinates.
  */
 public class Point {
-    int x, y; // Initilize a point as x and y
+    public int x, y; // Initilize a point as x and y
 
     /**
      * Constructor for a point with the x and y coordinates.

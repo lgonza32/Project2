@@ -1,6 +1,7 @@
 package main;
+
 /**
- * The main class to implement Convex Hull algorithm using Divide and Conquer
+ * The main class to implement Convex Hull algorithm using Divide and Conquer.
  * 
  * @author Laurenz Luke Gonzales
  *         GWID: G20104564
