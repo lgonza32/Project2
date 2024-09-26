@@ -92,31 +92,34 @@ public class ConvexHullTest {
 
     @Test
     public void testFindTangents() {
-        int indexLeft, indexRight;
-
         List<Point> leftHull = List.of(
-                new Point(-4, -3),
-                new Point(0, 1),
-                new Point(-2, -1)
-
+                new Point(-2, -3), // index 0
+                new Point(-4, 0), // index 1
+                new Point(-6, 4), // index 2
+                new Point(-1, 0) // index 3
         );
 
         List<Point> rightHull = List.of(
-                new Point(6, 7),
-                new Point(4, 5),
-                new Point(2, 3));
+                new Point(0, 5), // index 0
+                new Point(2, 7), // index 1
+                new Point(4, 4), // index 2
+                new Point(1, 4) // index 3
+        );
 
-        // We assume these are the "west" and "east" most points of their respective
-        // hulls
-        indexLeft = 1;
-        indexRight = 2;
+        int indexLeft = 3; // Index of the "east" most point in the left hull.
+        int indexRight = 0; //Index of the "west" most point in the right hull.
 
         // Test upper tangent
         int[] upperTangent = ConvexHull.findUpperTangent(leftHull, rightHull, indexLeft, indexRight);
 
-        // Upper left tangent should be (0, 1) and upper right should be (6,7)
-        assertEquals(1, upperTangent[0], "Upper tangent on the left hull should be at index 1");
-        assertEquals(0, upperTangent[1], "Upper tangent on the right hull should be at index 0");
+        assertEquals(0, upperTangent[0], "Lower left tangent should be at index 0.");
+        assertEquals(2, upperTangent[1], "Lower right tangent should be at index 2.");
 
+        // Test lower tangent
+        int[] lowerTangent = ConvexHull.findUpperTangent(leftHull, rightHull, indexLeft, indexRight);
+
+        assertEquals(0, lowerTangent[0], "Lower left tangent should be at index 0.");
+        assertEquals(2, lowerTangent[1], "Lower right tangent should be at index 2.");
+        // These feel wrong
     }
 }

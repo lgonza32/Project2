@@ -54,9 +54,9 @@ public class ConvexHull {
 
     /**
      * This method checks to make sure that we are iterating through the cycle in a
-     * counterclockwise direction when finding points on a plane. This helps ensure
-     * that the Convex shape is still a polygon and connections to the points do not
-     * concave.
+     * counterclockwise direction when finding points on a plane.
+     * This helps ensure that the convex shape is still a polygon and connections to
+     * the points do not concave.
      * 
      * @param a First point
      * @param b Second point
@@ -69,6 +69,18 @@ public class ConvexHull {
         return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
     }
 
+    /**
+     * This method finds the upper tangent of the convex boundary.
+     * This helps with the convex shape is still a polygon during the merging of the
+     * two hulls.
+     * 
+     * @param leftHull   Convex Hull of the left subset of n points (left half).
+     * @param rightHull  Convex Hull of the right subset of n points (right half).
+     * @param indexLeft  Index of the "east" most point in the left hull.
+     * @param indexRight Index of the "west" most point in the right hull.
+     * @return An array of the indices of the upper tangent in the left and right
+     *         hulls.
+     */
     public static int[] findUpperTangent(List<Point> leftHull, List<Point> rightHull, int indexLeft, int indexRight) {
         // Initialize sizes of hulls
         int nLeft = leftHull.size();
@@ -82,21 +94,62 @@ public class ConvexHull {
 
         while (!tangentFound) {
             tangentFound = true;
-            // Traverse through left hull to find uppertangent counterclockwise
+            // Traverse through left hull to find upper tangent
             while (checkCCW(rightHull.get(upperRight), leftHull.get(upperLeft),
                     leftHull.get((upperLeft + 1) % nLeft)) > 0) {
-                upperLeft = (upperLeft + 1) % nLeft;
-                tangentFound = false;
+                upperLeft = (upperLeft + 1) % nLeft; // Move counterclockwise
+                tangentFound = false; // Eliminate clockwise turns until tangent is found
             }
-            // Traverse through right hull to find uppertangent counterclockwise
+            // Traverse through right hull to find upper tangent
             while (checkCCW(leftHull.get(upperLeft), rightHull.get(upperRight),
                     rightHull.get((upperRight - 1 + nRight) % nRight)) < 0) {
-                upperLeft = (upperLeft + 1) % nLeft;
-                tangentFound = false;
+                upperRight = (upperRight - 1 + nRight) % nRight; // Move clockwise
+                tangentFound = false; // Eliminate clockwise turns until tangent is found
             }
         }
-        return new int[] { upperLeft, upperLeft };
+        return new int[] { upperLeft, upperRight };
 
+    }
+
+    /**
+     * This method finds the lower tangent of the convex boundary.
+     * This helps with the convex shape is still a polygon during the merging of the
+     * two hulls.
+     * 
+     * @param leftHull   Convex Hull of the left subset of n points (left half).
+     * @param rightHull  Convex Hull of the right subset of n points (right half).
+     * @param indexLeft  Index of the "east" most point in the left hull.
+     * @param indexRight Index of the "west" most point in the right hull.
+     * @return An array of the indices of the lower tangent in the left and right
+     *         hulls.
+     */
+    public static int[] findLowerTangent(List<Point> leftHull, List<Point> rightHull, int indexLeft, int indexRight) {
+        // Initialize sizes of hulls
+        int nLeft = leftHull.size();
+        int nRight = rightHull.size();
+
+        // Initialize starting indexes
+        int lowerLeft = indexLeft;
+        int lowerRight = indexRight;
+
+        boolean tangentFound = false;
+
+        while (!tangentFound) {
+            tangentFound = true;
+            // Traverse clockwise through the left hull to find the lower tangent
+            while (checkCCW(rightHull.get(lowerRight), leftHull.get(lowerLeft),
+                    leftHull.get((lowerLeft - 1 + nLeft) % nLeft)) < 0) {
+                lowerLeft = (lowerLeft - 1 + nLeft) % nLeft; // Move clockwise
+                tangentFound = false; // Eliminate clockwise turns until tangent is found
+            }
+            // Traverse counterclockwise through the right hull to find the lower tangent
+            while (checkCCW(leftHull.get(lowerLeft), rightHull.get(lowerRight),
+                    rightHull.get((lowerRight + 1) % nRight)) > 0) {
+                lowerRight = (lowerRight + 1) % nRight; // Move counterclockwise
+                tangentFound = false; // Eliminate clockwise turns until tangent is found
+            }
+        }
+        return new int[] { lowerLeft, lowerRight };
     }
 
     /**
