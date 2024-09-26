@@ -69,6 +69,36 @@ public class ConvexHull {
         return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);
     }
 
+    public static int[] findUpperTangent(List<Point> leftHull, List<Point> rightHull, int indexLeft, int indexRight) {
+        // Initialize sizes of hulls
+        int nLeft = leftHull.size();
+        int nRight = rightHull.size();
+
+        // Initialize starting indexes
+        int upperLeft = indexLeft;
+        int upperRight = indexRight;
+
+        boolean tangentFound = false;
+
+        while (!tangentFound) {
+            tangentFound = true;
+            // Traverse through left hull to find uppertangent counterclockwise
+            while (checkCCW(rightHull.get(upperRight), leftHull.get(upperLeft),
+                    leftHull.get((upperLeft + 1) % nLeft)) > 0) {
+                upperLeft = (upperLeft + 1) % nLeft;
+                tangentFound = false;
+            }
+            // Traverse through right hull to find uppertangent counterclockwise
+            while (checkCCW(leftHull.get(upperLeft), rightHull.get(upperRight),
+                    rightHull.get((upperRight - 1 + nRight) % nRight)) < 0) {
+                upperLeft = (upperLeft + 1) % nLeft;
+                tangentFound = false;
+            }
+        }
+        return new int[] { upperLeft, upperLeft };
+
+    }
+
     /**
      * Method that finds the Convex Hull of a given set of P of n points.
      * 

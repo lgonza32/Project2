@@ -89,4 +89,34 @@ public class ConvexHullTest {
                 () -> assertTrue(resultCW < 0, "Expected clockwise orientation."),
                 () -> assertEquals(0, resultCollinear, "Expected collinear points."));
     }
+
+    @Test
+    public void testFindTangents() {
+        int indexLeft, indexRight;
+
+        List<Point> leftHull = List.of(
+                new Point(-4, -3),
+                new Point(0, 1),
+                new Point(-2, -1)
+
+        );
+
+        List<Point> rightHull = List.of(
+                new Point(6, 7),
+                new Point(4, 5),
+                new Point(2, 3));
+
+        // We assume these are the "west" and "east" most points of their respective
+        // hulls
+        indexLeft = 1;
+        indexRight = 2;
+
+        // Test upper tangent
+        int[] upperTangent = ConvexHull.findUpperTangent(leftHull, rightHull, indexLeft, indexRight);
+
+        // Upper left tangent should be (0, 1) and upper right should be (6,7)
+        assertEquals(1, upperTangent[0], "Upper tangent on the left hull should be at index 1");
+        assertEquals(0, upperTangent[1], "Upper tangent on the right hull should be at index 0");
+
+    }
 }
