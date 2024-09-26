@@ -22,7 +22,7 @@ public class ConvexHull {
      * @param hull A list of points from a Convex Hull.
      * @return The index of the "east" most point in the hull.
      */
-    private static int findEastMost(List<Point> hull) {
+    public static int findEastMost(List<Point> hull) {
         int index = 0;
         for(int i = 1; i < hull.size(); i++) {
             if(hull.get(i).x > hull.get(index).x) {
@@ -38,7 +38,7 @@ public class ConvexHull {
      * @param hull A list of points from a Convex Hull.
      * @return The index of the "west" most point in the hull.
      */
-    private static int findWestMost(List<Point> hull) {
+    public static int findWestMost(List<Point> hull) {
         int index = 0;
         for(int i = 1; i < hull.size(); i++) {
             if(hull.get(i).x < hull.get(index).x) {
@@ -47,4 +47,5 @@ public class ConvexHull {
         }
         return index;
     }
+
 }
