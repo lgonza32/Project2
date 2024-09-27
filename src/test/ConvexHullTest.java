@@ -171,17 +171,21 @@ public class ConvexHullTest {
         assertEquals(expectedHull.size(), mergedHull.size(), "Merged hull size should match expected size.");
     }
 
+    /**
+     * Test for mergeHulls() method.
+     * This helps ensure the Divide and Conquer step is correct
+     */
     @Test
     public void testFindHull() {
         Point[] points = {
-                new Point(-6, -4), // index 0
-                new Point(-4, -2), // index 1
-                new Point(-2, 0), // index 2
-                new Point(0, 2), // index 3
-                new Point(6, 5), // index 4
-                new Point(8, 4), // index 5
-                new Point(10, 2), // index 6
-                new Point(12, -1) // index 7
+                new Point(-6, -4), 
+                new Point(-4, -2), 
+                new Point(-2, 0), 
+                new Point(0, 2), 
+                new Point(6, 5), 
+                new Point(8, 4), 
+                new Point(10, 2), 
+                new Point(12, -1) 
         };
 
         // Test findHull()
@@ -196,5 +200,36 @@ public class ConvexHullTest {
 
         // Check if the convexHull matches expectedHull
         assertEquals(expectedHull.size(), convexHull.size(), "Convex hull size should match expected size.");
+    }
+
+    /**
+     * Test for convexHull() method.
+     * This helps ensure the Divide and Conquer step is correct
+     */
+    @Test
+    public void testConvexHull() {
+        Point[] points = {
+            new Point(-6, -4), 
+            new Point(-4, -2), 
+            new Point(-2, 0), 
+            new Point(0, 2), 
+            new Point(6, 5), 
+            new Point(8, 4), 
+            new Point(10, 2), 
+            new Point(12, -1) 
+    };
+
+    // Test convexHull()
+    List<Point> convexHull = ConvexHull.convexHull(points);
+
+    List<Point> expectedHull = List.of(
+            new Point(-6, -4), 
+            new Point(0, 2), 
+            new Point(6, 5), 
+            new Point(12, -1) 
+    );
+
+    // Check if the convexHull matches expectedHull
+    assertEquals(expectedHull.size(), convexHull.size(), "Convex hull size should match expected size.");
     }
 }

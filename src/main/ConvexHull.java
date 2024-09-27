@@ -184,13 +184,13 @@ public class ConvexHull {
      * each subset halves, and merge it into one Convex Hull. This method is the
      * Divide and Conquer step through with the merge step.
      * 
-     * @param points An array of points.
-     * @param indexLeft Index of the "east" most point in the left hull.
+     * @param points     An array of points.
+     * @param indexLeft  Index of the "east" most point in the left hull.
      * @param indexRight Index of the "west" most point in the right hull.
      * @return
      */
     public static List<Point> findHull(Point[] points, int indexLeft, int indexRight) {
-        // If there's only one or two points, they form the hull 
+        // If there's only one or two points, they form the hull
         // This avoids stack overflow error
         if (indexRight - indexLeft + 1 <= 2) {
             List<Point> hull = new ArrayList<>();
@@ -199,30 +199,31 @@ public class ConvexHull {
             }
             return hull;
         }
-        
+
         // Find the meridian of the "west" most and "east" most points
         int meridian = (indexLeft + indexRight) / 2;
 
         // Recursively find the two subset halves
         List<Point> leftHull = findHull(points, indexLeft, meridian);
         List<Point> rightHull = findHull(points, meridian + 1, indexRight);
-        
+
         // Merge the two into one Convex Hull
         return mergeHulls(leftHull, rightHull);
     }
 
     /**
-     * This method that finds the Convex Hull of a given set of P of n points.
+     * This method that finds the Convex Hull of a given set of P of n points using
+     * Divide and Conquer. The points get sorted first in to split the points easier
+     * to find the meridian.
      * 
-     * @param points
-     * @return
+     * @param points An array of points.
+     * @return A list of points that show the Convex Hull.
      */
-    // public static List<Point> convexHull(Point[] points) {
+    public static List<Point> convexHull(Point[] points) {
+        // Sort the n points by x coords to make finding median easier
+        Arrays.sort(points, Comparator.comparingInt(p -> p.x));
 
-    // // Sort the n points by x coords to make finding median easier
-    // Arrays.sort(points, Comparator.comparingInt(p -> p.x));
-
-    // return points;
-    // }
-
+        // Use Divide and Conquer to find the Convex Hull
+        return findHull(points, 0, points.length - 1);
+    }
 }
