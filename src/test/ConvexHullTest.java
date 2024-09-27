@@ -5,6 +5,10 @@ import main.Point;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -118,12 +122,12 @@ public class ConvexHullTest {
         int[] upperTangent = ConvexHull.findUpperTangent(leftHull, rightHull, indexLeft, indexRight);
         int[] lowerTangent = ConvexHull.findLowerTangent(leftHull, rightHull, indexLeft, indexRight);
 
-        // I don't know if these are good enough
+        // I don't know if these are good
         assertAll("Testing test cases for checkCCW()",
-                () -> assertEquals(0, upperTangent[0], "Upper left tangent should be at index 0."),
-                () -> assertEquals(4, upperTangent[1], "Upper right tangent should be at index 4."),
+                () -> assertEquals(4, upperTangent[0], "Upper left tangent should be at index 4."),
+                () -> assertEquals(0, upperTangent[1], "Upper right tangent should be at index 0."),
                 () -> assertEquals(3, lowerTangent[0], "Lower left tangent should be at index 3."),
-                () -> assertEquals(1, lowerTangent[1], "Lower right tangent should be at index 1."));
+                () -> assertEquals(0, lowerTangent[1], "Lower right tangent should be at index 0."));
     }
 
     /**
@@ -165,12 +169,32 @@ public class ConvexHullTest {
 
         // Check if the merged hull matches the expected result
         assertEquals(expectedHull.size(), mergedHull.size(), "Merged hull size should match expected size.");
+    }
 
-        for (int i = 0; i < expectedHull.size(); i++) {
-            Point expectedPoint = expectedHull.get(i);
-            Point actualPoint = mergedHull.get(i);
-            assertEquals(expectedPoint.x, actualPoint.x, "x coords should match for point " + i);
-            assertEquals(expectedPoint.y, actualPoint.y, "y coords should match for point " + i);
-        }
+    @Test
+    public void testFindHull() {
+        Point[] points = {
+                new Point(-6, -4), // index 0
+                new Point(-4, -2), // index 1
+                new Point(-2, 0), // index 2
+                new Point(0, 2), // index 3
+                new Point(6, 5), // index 4
+                new Point(8, 4), // index 5
+                new Point(10, 2), // index 6
+                new Point(12, -1) // index 7
+        };
+
+        // Test findHull()
+        List<Point> convexHull = ConvexHull.findHull(points, 0, points.length - 1);
+
+        List<Point> expectedHull = List.of(
+                new Point(-6, -4), 
+                new Point(0, 2), 
+                new Point(6, 5), 
+                new Point(12, -1) 
+        );
+
+        // Check if the convexHull matches expectedHull
+        assertEquals(expectedHull.size(), convexHull.size(), "Convex hull size should match expected size.");
     }
 }

@@ -93,13 +93,13 @@ public class ConvexHull {
             while (checkCCW(rightHull.get(upperRight), leftHull.get(upperLeft),
                     leftHull.get((upperLeft + 1) % nLeft)) > 0) {
                 upperLeft = (upperLeft + 1) % nLeft; // Move counterclockwise
-                tangentFound = false; // Eliminate clockwise turns until tangent is found
+                tangentFound = false; // Keep searching
             }
             // Traverse through right hull to find upper tangent
             while (checkCCW(leftHull.get(upperLeft), rightHull.get(upperRight),
                     rightHull.get((upperRight - 1 + nRight) % nRight)) < 0) {
                 upperRight = (upperRight - 1 + nRight) % nRight; // Move clockwise
-                tangentFound = false; // Eliminate clockwise turns until tangent is found
+                tangentFound = false; // Keep searching
             }
         }
         return new int[] { upperLeft, upperRight };
@@ -128,13 +128,13 @@ public class ConvexHull {
             while (checkCCW(rightHull.get(lowerRight), leftHull.get(lowerLeft),
                     leftHull.get((lowerLeft - 1 + nLeft) % nLeft)) < 0) {
                 lowerLeft = (lowerLeft - 1 + nLeft) % nLeft; // Move clockwise
-                tangentFound = false; // Eliminate clockwise turns until tangent is found
+                tangentFound = false; // Keep searching
             }
             // Traverse counterclockwise through the right hull to find the lower tangent
             while (checkCCW(leftHull.get(lowerLeft), rightHull.get(lowerRight),
                     rightHull.get((lowerRight + 1) % nRight)) > 0) {
                 lowerRight = (lowerRight + 1) % nRight; // Move counterclockwise
-                tangentFound = false; // Eliminate clockwise turns until tangent is found
+                tangentFound = false; // Keep searching
             }
         }
         return new int[] { lowerLeft, lowerRight };
@@ -180,7 +180,39 @@ public class ConvexHull {
     }
 
     /**
-     * Method that finds the Convex Hull of a given set of P of n points.
+     * This method allows us to find the meridian, recursively find the hulls of
+     * each subset halves, and merge it into one Convex Hull. This method is the
+     * Divide and Conquer step through with the merge step.
+     * 
+     * @param points An array of points.
+     * @param indexLeft Index of the "east" most point in the left hull.
+     * @param indexRight Index of the "west" most point in the right hull.
+     * @return
+     */
+    public static List<Point> findHull(Point[] points, int indexLeft, int indexRight) {
+        // If there's only one or two points, they form the hull 
+        // This avoids stack overflow error
+        if (indexRight - indexLeft + 1 <= 2) {
+            List<Point> hull = new ArrayList<>();
+            for (int i = indexLeft; i <= indexLeft; i++) {
+                hull.add(points[i]);
+            }
+            return hull;
+        }
+        
+        // Find the meridian of the "west" most and "east" most points
+        int meridian = (indexLeft + indexRight) / 2;
+
+        // Recursively find the two subset halves
+        List<Point> leftHull = findHull(points, indexLeft, meridian);
+        List<Point> rightHull = findHull(points, meridian + 1, indexRight);
+        
+        // Merge the two into one Convex Hull
+        return mergeHulls(leftHull, rightHull);
+    }
+
+    /**
+     * This method that finds the Convex Hull of a given set of P of n points.
      * 
      * @param points
      * @return
