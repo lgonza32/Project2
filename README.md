@@ -41,6 +41,7 @@ Experimental Result: 2114800900 ns
 - ConvexHull.java: Contains the Convex Hull, Divide and Conquer implmentation.
 - Point.java: Contains the points implementation.
 
+<!-- TIME COMPLEXITY -->
 ## Time Complexity
 Overall time complexity of the program is *O(n log n)*
 - Divide Step: *O(1)*
