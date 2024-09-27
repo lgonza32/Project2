@@ -31,7 +31,7 @@ To run this program, simply execute the `Main.java` file. Note that within `Main
 ### Example:
 ```sh
 Enter the number of points (n): 10000000
-<Points will show here if uncommented>
+< -- Points will show here if uncommented -->
 Experimental Result: 2114800900 ns
 ```
 
