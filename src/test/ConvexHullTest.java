@@ -90,36 +90,87 @@ public class ConvexHullTest {
                 () -> assertEquals(0, resultCollinear, "Expected collinear points."));
     }
 
+    /**
+     * Test for findUpperTangent() and findLowerTangent() methods.
+     */
     @Test
     public void testFindTangents() {
         List<Point> leftHull = List.of(
-                new Point(-2, -3), // index 0
-                new Point(-4, 0), // index 1
-                new Point(-6, 4), // index 2
-                new Point(-1, 0) // index 3
+                new Point(-6, -4), // index 0
+                new Point(-4, -2), // index 1
+                new Point(-2, 0), // index 2
+                new Point(0, 2), // index 3
+                new Point(2, 1) // index 4
         );
 
         List<Point> rightHull = List.of(
-                new Point(0, 5), // index 0
-                new Point(2, 7), // index 1
-                new Point(4, 4), // index 2
-                new Point(1, 4) // index 3
+                new Point(4, 3), // index 0
+                new Point(6, 5), // index 1
+                new Point(8, 4), // index 2
+                new Point(10, 2), // index 3
+                new Point(12, -1) // index 4
         );
 
-        int indexLeft = 3; // Index of the "east" most point in the left hull.
-        int indexRight = 0; //Index of the "west" most point in the right hull.
+        int indexLeft = 4; // Index of the "east" most point in the left hull.
+        int indexRight = 0; // Index of the "west" most point in the right hull.
 
-        // Test upper tangent
+        // Test findUpperTangent() and findLowerTangent()
         int[] upperTangent = ConvexHull.findUpperTangent(leftHull, rightHull, indexLeft, indexRight);
+        int[] lowerTangent = ConvexHull.findLowerTangent(leftHull, rightHull, indexLeft, indexRight);
 
-        assertEquals(0, upperTangent[0], "Lower left tangent should be at index 0.");
-        assertEquals(2, upperTangent[1], "Lower right tangent should be at index 2.");
+        // I don't know if these are good enough
+        assertAll("Testing test cases for checkCCW()",
+                () -> assertEquals(0, upperTangent[0], "Upper left tangent should be at index 0."),
+                () -> assertEquals(4, upperTangent[1], "Upper right tangent should be at index 4."),
+                () -> assertEquals(3, lowerTangent[0], "Lower left tangent should be at index 3."),
+                () -> assertEquals(1, lowerTangent[1], "Lower right tangent should be at index 1."));
+    }
 
-        // Test lower tangent
-        int[] lowerTangent = ConvexHull.findUpperTangent(leftHull, rightHull, indexLeft, indexRight);
+    /**
+     * Test for mergeHulls() method.
+     * This helps ensure merging is correct
+     */
+    @Test
+    public void testMergeHulls() {
+        List<Point> leftHull = List.of(
+                new Point(-6, -4), // index 0
+                new Point(-4, -2), // index 1
+                new Point(-2, 0), // index 2
+                new Point(0, 2), // index 3
+                new Point(2, 1) // index 4
+        );
 
-        assertEquals(0, lowerTangent[0], "Lower left tangent should be at index 0.");
-        assertEquals(2, lowerTangent[1], "Lower right tangent should be at index 2.");
-        // These feel wrong
+        List<Point> rightHull = List.of(
+                new Point(4, 3), // index 0
+                new Point(6, 5), // index 1
+                new Point(8, 4), // index 2
+                new Point(10, 2), // index 3
+                new Point(12, -1) // index 4
+        );
+
+        // Test mergedHull()
+        List<Point> mergedHull = ConvexHull.mergeHulls(leftHull, rightHull);
+
+        // Expected result
+        List<Point> expectedHull = List.of(
+                new Point(-6, -4), // index 0
+                new Point(-4, -2), // index 1
+                new Point(-2, 0), // index 2
+                new Point(0, 2), // index 3
+                new Point(6, 5), // index 4
+                new Point(8, 4), // index 5
+                new Point(10, 2), // index 6
+                new Point(12, -1) // index 7
+        );
+
+        // Check if the merged hull matches the expected result
+        assertEquals(expectedHull.size(), mergedHull.size(), "Merged hull size should match expected size.");
+
+        for (int i = 0; i < expectedHull.size(); i++) {
+            Point expectedPoint = expectedHull.get(i);
+            Point actualPoint = mergedHull.get(i);
+            assertEquals(expectedPoint.x, actualPoint.x, "x coords should match for point " + i);
+            assertEquals(expectedPoint.y, actualPoint.y, "y coords should match for point " + i);
+        }
     }
 }
