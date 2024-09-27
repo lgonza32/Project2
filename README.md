@@ -47,4 +47,4 @@ Overall time complexity of the program is *O(n log n)*
 - Conquer Step (Recursively): *O(log n)*
 - Merge Step: *O(n)*
 - Overall recurrence relation: *T(n) = 2T(n/2) + O(n)*
-Theoretical analysis of the Time Complexity is stated within the submitted document.
+<p> Theoretical analysis of the Time Complexity is stated within the submitted document. </p>
