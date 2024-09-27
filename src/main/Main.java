@@ -45,6 +45,21 @@ public class Main {
         // Generate random points on a 2D plan
         Point[] points = randPoints(n);
 
+        // Loop to print n number of points
+        System.out.println("Points (x, y):");
+        for (Point p : points) {
+            System.out.println("(" + p.x + ", " + p.y + ")");
+        }
+        
+        // Calculate the Convex Hull
+        List<Point> convexHull = ConvexHull.convexHull(points);
+
+        // Loop to print the points in the Convex Hull
+        System.out.println("Convex Hull:");
+        for (Point point : convexHull) {
+            System.out.println(point);
+        }
+
         scanner.close();
     }
 }
