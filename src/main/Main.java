@@ -50,7 +50,7 @@ public class Main {
         System.out.print("Enter the number of points (n): ");
         int n = scanner.nextInt();
 
-        // Generate random points on a 2D plan
+        // Generate random points on a 2D plane
         Point[] points = randPoints(n);
 
         // Loop to print n number of points
