@@ -54,13 +54,14 @@ public class Main {
         Point[] points = randPoints(n);
 
         // Loop to print n number of points
-        System.out.println("Points (x, y):");
-        for (Point p : points) {
-            System.out.println("(" + p.x + ", " + p.y + ")");
-        }
+        // System.out.println("Points (x, y):");
+        // for (Point p : points) {
+        // System.out.println("(" + p.x + ", " + p.y + ")");
+        // }
 
-        // To measure larger sizes of n points, comment out the loops that print out
-        // points.
+        // To measure execution time with larger sizes of n more accurately, comment out
+        // the loops that print out points (also helps out to not see 10,000,000+
+        // points).
         long startTimeNs = System.nanoTime(); // Measure time in nanoseconds
 
         // Calculate the Convex Hull
@@ -69,10 +70,10 @@ public class Main {
         long endTimeNs = System.nanoTime();
 
         // Loop to print the points in the Convex Hull
-        System.out.println("Convex Hull:");
-        for (Point point : convexHull) {
-            System.out.println(point);
-        }
+        // System.out.println("Convex Hull:");
+        // for (Point point : convexHull) {
+        // System.out.println(point);
+        // }
 
         long experimentalResultNs = endTimeNs - startTimeNs; // Time in nanoseconds
 
