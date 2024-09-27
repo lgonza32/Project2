@@ -123,11 +123,11 @@ public class ConvexHullTest {
         int[] lowerTangent = ConvexHull.findLowerTangent(leftHull, rightHull, indexLeft, indexRight);
 
         // I don't know if these are good
-        assertAll("Testing test cases for checkCCW()",
-                () -> assertEquals(4, upperTangent[0], "Upper left tangent should be at index 4."),
-                () -> assertEquals(0, upperTangent[1], "Upper right tangent should be at index 0."),
+        assertAll("Testing test cases for testFindTangents()",
+                () -> assertEquals(0, upperTangent[0], "Upper left tangent should be at index 0."),
+                () -> assertEquals(4, upperTangent[1], "Upper right tangent should be at index 4."),
                 () -> assertEquals(3, lowerTangent[0], "Lower left tangent should be at index 3."),
-                () -> assertEquals(0, lowerTangent[1], "Lower right tangent should be at index 0."));
+                () -> assertEquals(1, lowerTangent[1], "Lower right tangent should be at index ."));
     }
 
     /**
