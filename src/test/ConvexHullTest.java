@@ -5,6 +5,7 @@ import main.Point;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
+import java.util.LinkedList;
 
 /**
  * JUnit tests for the ConvexHull class.
@@ -23,20 +24,35 @@ public class ConvexHullTest {
         public void testHullXValues() {
                 int eastMost, westMost;
 
-                List<Point> hull = List.of(
+                List<Point> hull = new LinkedList<>(List.of(
                                 new Point(0, 0),
                                 new Point(1, 1),
-                                new Point(2, 2),
+                                new Point(3, 2),
                                 new Point(3, 3),
                                 new Point(-1, -1),
-                                new Point(-2, -2),
-                                new Point(-3, -3));
+                                new Point(-3, -2),
+                                new Point(-3, -3)));
 
                 eastMost = ConvexHull.findEastMost(hull);
-                assertEquals(3, eastMost, "'East' most point should be at index 3: (3, 3).");
-
                 westMost = ConvexHull.findWestMost(hull);
+
+                // Test to find appropriate largest and smallest points
+                assertEquals(3, eastMost, "'East' most point should be at index 3: (3, 3).");
                 assertEquals(6, westMost, "'West' most point should be at index 6: (-3, -3).");
+
+                hull.clear();
+
+                // Test to see if IllegalArgumentException is thrown when the list is empty list
+                assertThrows(IllegalArgumentException.class, () -> {
+                        ConvexHull.findEastMost(hull);
+                }, "Expected IllegalArgumentException for null list");
+
+                // Test to see if IllegalArgumentException is thrown when there is no list
+                // (null)
+                assertThrows(IllegalArgumentException.class, () -> {
+                        ConvexHull.findEastMost(null);
+                }, "Expected IllegalArgumentException for null list");
+
         }
 
         /**

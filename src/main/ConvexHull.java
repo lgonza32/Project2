@@ -1,6 +1,7 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -20,15 +21,22 @@ public class ConvexHull {
 
     /**
      * Mehod that finds the "east" most point (the point with the largest x value)
-     * in the hull.
+     * for a given hull. If there are multiple points with the same x value, the one
+     * with the largest y value is returned.
      * 
      * @param hull A list of points from a Convex Hull.
      * @return The index of the "east" most point in the hull.
+     * @throws IllegalArgumentException if hull is null or empty
      */
     public static int findEastMost(List<Point> hull) {
+        if (hull == null || hull.isEmpty()) {
+            throw new IllegalArgumentException("The hull cannot be null or empty.");
+        }
+
         int index = 0;
         for (int i = 1; i < hull.size(); i++) {
-            if (hull.get(i).x > hull.get(index).x) {
+            if (hull.get(i).x > hull.get(index).x ||
+                    (hull.get(i).x == hull.get(index).x && hull.get(i).y > hull.get(index).y)) {
                 index = i;
             }
         }
@@ -37,15 +45,22 @@ public class ConvexHull {
 
     /**
      * Method that finds the "west" most point (the point with the smallest x value)
-     * in the hull .
+     * for a given hull. If there are multiple points with the same x value, the one
+     * with the largest y value is returned.
      * 
      * @param hull A list of points from a Convex Hull.
      * @return The index of the "west" most point in the hull.
+     * @throws IllegalArgumentException if hull is null or empty
      */
     public static int findWestMost(List<Point> hull) {
+        if (hull == null || hull.isEmpty()) {
+            throw new IllegalArgumentException("The hull cannot be null or empty.");
+        }
+
         int index = 0;
         for (int i = 1; i < hull.size(); i++) {
-            if (hull.get(i).x < hull.get(index).x) {
+            if (hull.get(i).x < hull.get(index).x ||
+                    (hull.get(i).x == hull.get(index).x && hull.get(i).y < hull.get(index).y)) {
                 index = i;
             }
         }
