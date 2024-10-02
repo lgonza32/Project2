@@ -68,17 +68,17 @@ public class ConvexHull {
     }
 
     /**
-     * This method checks to make sure that we are iterating through the cycle in a
-     * counterclockwise direction when finding points on a plane.
-     * This helps ensure that the convex shape is still a polygon and connections to
-     * the points do not concave.
+     * This method is used to determine whether the sequence of points a -> b -> c
+     * makes a counterclockwise turn, a clockwise turn, or if they are collinear on
+     * a 2D plane.This helps ensure that the convex shape is still a polygon and
+     * connections to the points do not concave.
      * 
      * @param a First point
      * @param b Second point
      * @param c Third point
-     * @return Positive - if counterclockwise
-     *         Negative - if clockwise
-     *         Zero - if collinear
+     * @return Positive - if counterclockwise turn.
+     *         Negative - if clockwise turn.
+     *         Zero - if collinear.
      */
     public static int checkCCW(Point a, Point b, Point c) {
         return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x);

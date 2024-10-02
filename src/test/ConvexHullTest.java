@@ -57,7 +57,7 @@ public class ConvexHullTest {
 
         /**
          * Test for checkCCW() method.
-         * Helps determine if we are able to iterate through a set of hulls
+         * Helps determine if we are able to iterate through a set of hulls correctly.
          */
         @Test
         public void testCheckCCW() {
@@ -82,9 +82,9 @@ public class ConvexHullTest {
                 resultCollinear = ConvexHull.checkCCW(g, h, i);
 
                 assertAll("Testing test cases for checkCCW()",
-                                () -> assertTrue(resultCCW > 0, "Expected counterclockwise orientation."),
-                                () -> assertTrue(resultCW < 0, "Expected clockwise orientation."),
-                                () -> assertEquals(0, resultCollinear, "Expected collinear points."));
+                                () -> assertTrue(resultCCW > 0, "Expected counterclockwise turn."),
+                                () -> assertTrue(resultCW < 0, "Expected clockwise turn."),
+                                () -> assertEquals(0, resultCollinear, "Expected collinear."));
         }
 
         /**
