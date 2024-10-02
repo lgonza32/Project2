@@ -297,14 +297,15 @@ public class ConvexHull {
     }
 
     /**
-     * This method allows us to find the meridian, recursively find the hulls of
-     * each subset halves, and merge it into one Convex Hull. This method is the
-     * Divide and Conquer step through with the merge step.
+     * This method recursively finds the Convex Hull for a given set of points using
+     * a Divide and Conquer. This method splits the set of points, finds the Convex
+     * Hull for each subset, and then merges them.
      * 
      * @param points     An array of points.
      * @param indexLeft  Index of the "east" most point in the left hull.
      * @param indexRight Index of the "west" most point in the right hull.
-     * @return
+     * @return A list of points representing the Convex Hull of a given set P of
+     *         points n.
      */
     public static List<Point> findHull(Point[] points, int indexLeft, int indexRight) {
         // If there's only one or two points, they form the hull
@@ -317,12 +318,12 @@ public class ConvexHull {
             return hull;
         }
 
-        // Find the meridian of the "west" most and "east" most points
-        int meridian = (indexLeft + indexRight) / 2;
+        // Find the median of the "west" most and "east" most points
+        int median = (indexLeft + indexRight) / 2;
 
         // Recursively find the two subset halves
-        List<Point> leftHull = findHull(points, indexLeft, meridian);
-        List<Point> rightHull = findHull(points, meridian + 1, indexRight);
+        List<Point> leftHull = findHull(points, indexLeft, median);
+        List<Point> rightHull = findHull(points, median + 1, indexRight);
 
         // Merge the two into one Convex Hull
         return mergeHulls(leftHull, rightHull);
@@ -341,6 +342,6 @@ public class ConvexHull {
         Arrays.sort(points, Comparator.comparingInt(p -> p.x));
 
         // Use Divide and Conquer to find the Convex Hull
-        return findHull(points, 0, points.length - 1);
+        return new LinkedList<>(findHull(points, 0, points.length - 1));
     }
 }
