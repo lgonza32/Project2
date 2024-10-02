@@ -70,7 +70,7 @@ public class ConvexHull {
     /**
      * This method is used to determine whether the sequence of points a -> b -> c
      * makes a counterclockwise turn, a clockwise turn, or if they are collinear on
-     * a 2D plane.This helps ensure that the convex shape is still a polygon and
+     * a 2D plane. This helps ensure that the convex shape is still a polygon and
      * connections to the points do not concave.
      * 
      * @param a First point
@@ -97,8 +97,10 @@ public class ConvexHull {
      *         left and right hulls.
      */
     public static int[] findUpperTangent(List<Point> leftHull, List<Point> rightHull, int indexLeft, int indexRight) {
-        int nLeft = leftHull.size(), nRight = rightHull.size(); // Initialize sizes of hulls
-        int upperLeft = indexLeft, upperRight = indexRight; // Initialize starting indexes
+        int nLeft = leftHull.size(); // Initialize sizes of hulls
+        int nRight = rightHull.size(); 
+        int upperLeft = indexLeft; 
+        int upperRight = indexRight; // Initialize starting indexes
         boolean tangentFound = false;
 
         while (!tangentFound) {
@@ -132,8 +134,10 @@ public class ConvexHull {
      *         left and right hulls.
      */
     public static int[] findLowerTangent(List<Point> leftHull, List<Point> rightHull, int indexLeft, int indexRight) {
-        int nLeft = leftHull.size(), nRight = rightHull.size(); // Initialize sizes of hulls
-        int lowerLeft = indexLeft, lowerRight = indexRight; // Initialize starting indexes
+        int nLeft = leftHull.size(); 
+        int nRight = rightHull.size(); // Initialize sizes of hulls
+        int lowerLeft = indexLeft; 
+        int lowerRight = indexRight; // Initialize starting indexes
         boolean tangentFound = false;
 
         while (!tangentFound) {
