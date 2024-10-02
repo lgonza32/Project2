@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 /**
- * Implements the Convex Hull algorithm using divide and conquer.
+ * Implements the Convex Hull algorithm using Divide and Conquer.
  * This class provides methods to find and merge Convex Hulls on a 2D plane.
  * The scheme behind Convex Hull, Divide and Conquer for a set P of n points:
  * <ul>
@@ -105,30 +105,6 @@ public class ConvexHull {
     }
 
     /**
-     * Method that adds points from a given hull between two tangents to the merged
-     * hull list.
-     *
-     * @param mergedHull List to which points will be added to the merged convex
-     *                   hull.
-     * @param hull       Hull from which points will be added.
-     * @param startIndex Index to start adding points from.
-     * @param endIndex   Index to stop adding points at.
-     */
-    public static void addPoints(List<Point> mergedHull, List<Point> hull, int startIndex, int endIndex) {
-        int n = hull.size();
-        int currentIndex = startIndex;
-
-        // Traverse through the hull, adding points until reaching the endIndex
-        while (true) {
-            mergedHull.add(hull.get(currentIndex));
-            if (currentIndex == endIndex) {
-                break; // Stop when the end index is reached
-            }
-            currentIndex = (currentIndex + 1) % n; // Move to the next point
-        }
-    }
-
-    /**
      * This method merges two halves into a single Convex Hull
      * by finding the upper and lower tangents between the two hulls.
      *
@@ -152,8 +128,8 @@ public class ConvexHull {
         List<Point> mergedHull = new LinkedList<>(); // Hold final Convex Hull
 
         // Adds up all the points from the left and right hulls between tangents
-        addPoints(mergedHull, leftHull, upperLeft, lowerLeft); // left hull
-        addPoints(mergedHull, rightHull, lowerRight, upperRight); // right hull
+        ConvexHullUtil.addPoints(mergedHull, leftHull, upperLeft, lowerLeft); // left hull
+        ConvexHullUtil.addPoints(mergedHull, rightHull, lowerRight, upperRight); // right hull
 
         return mergedHull;
     }
@@ -180,14 +156,14 @@ public class ConvexHull {
             return hull;
         }
 
-        // Find the median of the "west" most and "east" most points
+        // Find the median of the "west" most and "east" most points (divide step)
         int median = (indexLeft + indexRight) / 2;
 
-        // Recursively find the two subset halves
+        // Recursively find the two subset halves (conquer step)
         List<Point> leftHull = findHull(points, indexLeft, median);
         List<Point> rightHull = findHull(points, median + 1, indexRight);
 
-        // Merge the two into one Convex Hull
+        // Merge the two into one Convex Hull (merge step)
         return mergeHulls(leftHull, rightHull);
     }
 

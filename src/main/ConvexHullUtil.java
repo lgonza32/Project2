@@ -4,8 +4,9 @@ import java.util.List;
 
 /**
  * Helper class for ConvexHull.java.
+ * 
  * This class contantains helper methods that do specific operations to help
- * compute the Convex Hull.
+ * compute the Convex Hull. This is mainly used for clarity and convenience.
  */
 public class ConvexHullUtil {
 
@@ -146,6 +147,30 @@ public class ConvexHullUtil {
             currentIndex = (currentIndex - 1 + nRight) % nRight; // Move clockwise
         }
         return currentIndex;
+    }
+
+    /**
+     * Method that adds points from a given hull between two tangents to the merged
+     * hull list.
+     *
+     * @param mergedHull List to which points will be added to the merged convex
+     *                   hull.
+     * @param hull       Hull from which points will be added.
+     * @param startIndex Index to start adding points from.
+     * @param endIndex   Index to stop adding points at.
+     */
+    public static void addPoints(List<Point> mergedHull, List<Point> hull, int startIndex, int endIndex) {
+        int n = hull.size();
+        int currentIndex = startIndex;
+
+        // Traverse through the hull, adding points until reaching the endIndex
+        while (true) {
+            mergedHull.add(hull.get(currentIndex));
+            if (currentIndex == endIndex) {
+                break; // Stop when the end index is reached
+            }
+            currentIndex = (currentIndex + 1) % n; // Move to the next point
+        }
     }
 
 }
