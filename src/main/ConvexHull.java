@@ -85,83 +85,190 @@ public class ConvexHull {
     }
 
     /**
-     * This method finds the upper tangent of the convex boundary.
-     * This helps with the convex shape is still a polygon during the merging of the
-     * two hulls.
+     * This method moves to the next point in the left hull in a counterclockwise
+     * direction.
+     *
+     * @param leftHull       Convex Hull of the left subset of n points (left half).
+     * @param rightHullPoint A point in the right hull.
+     * @param currentIndex   Current index in the left hull.
+     * @return The updated index in the left hull.
+     */
+    public static int moveLeftCCW(List<Point> leftHull, Point rightHullPoint, int currentIndex) {
+        int nLeft = leftHull.size();
+        while (checkCCW(rightHullPoint, leftHull.get(currentIndex),
+                leftHull.get((currentIndex + 1) % nLeft)) > 0) {
+            currentIndex = (currentIndex + 1) % nLeft; // Move counterclockwise
+        }
+        return currentIndex;
+    }
+
+    /**
+     * This method moves to the next point in the right hull in a counterclockwise
+     * direction.
+     *
+     * @param rightHull     Convex Hull of the right subset of n points (right
+     *                      half).
+     * @param leftHullPoint A point in the left hull.
+     * @param currentIndex  Current index in the right hull.
+     * @return The updated index in the right hull.
+     */
+    public static int moveRightCCW(List<Point> rightHull, Point leftHullPoint, int currentIndex) {
+        int nRight = rightHull.size();
+        while (checkCCW(leftHullPoint, rightHull.get(currentIndex),
+                rightHull.get((currentIndex + 1) % nRight)) > 0) {
+            currentIndex = (currentIndex + 1) % nRight; // Move counterclockwise
+        }
+        return currentIndex;
+    }
+
+    /**
+     * This method moves to the previous point in the left hull in a clockwise
+     * direction.
+     *
+     * @param leftHull       Convex Hull of the left subset of n points (left half).
+     * @param rightHullPoint A point in the right hull.
+     * @param currentIndex   Current index in the left hull.
+     * @return The updated index in the left hull.
+     */
+    public static int moveLeftCW(List<Point> leftHull, Point rightHullPoint, int currentIndex) {
+        int nLeft = leftHull.size();
+        while (checkCCW(rightHullPoint, leftHull.get(currentIndex),
+                leftHull.get((currentIndex - 1 + nLeft) % nLeft)) < 0) {
+            currentIndex = (currentIndex - 1 + nLeft) % nLeft; // Move clockwise
+        }
+        return currentIndex;
+    }
+
+    /**
+     * This method moves to the previous point in the left hull in a clockwise
+     * direction.
+     *
+     * @param rightHull     Convex Hull of the right subset of n points (right
+     *                      half).
+     * @param leftHullPoint A point in the left hull.
+     * @param currentIndex  Current index in the left hull.
+     * @return The updated index in the left hull.
+     */
+    public static int moveRightCW(List<Point> rightHull, Point leftHullPoint, int currentIndex) {
+        int nRight = rightHull.size();
+        while (checkCCW(leftHullPoint, rightHull.get(currentIndex),
+                rightHull.get((currentIndex - 1 + nRight) % nRight)) < 0) {
+            currentIndex = (currentIndex - 1 + nRight) % nRight; // Move clockwise
+        }
+        return currentIndex;
+    }
+
+    /**
+     * This method finds the upper tangent between two convex hulls (leftHull and
+     * rightHull) during the merge step. The upper tangent is defined as the line
+     * segment that touches both hulls without intersecting their interiors, and
+     * lies above all other points in both hulls.
+     * 
+     * This method begins with a starting point from each hull and iteratively
+     * refines the points to find the upper tangent by moving along the hulls in the
+     * appropriate direction (counterclockwise for the left hull, clockwise for the
+     * right hull).
      * 
      * @param leftHull   Convex Hull of the left subset of n points (left half).
      * @param rightHull  Convex Hull of the right subset of n points (right half).
      * @param indexLeft  Index of the "east" most point in the left hull.
      * @param indexRight Index of the "west" most point in the right hull.
-     * @return An array containing two indices (points) of the lower tangent in the
-     *         left and right hulls.
+     * @return An array containing two points of the upper tangent in the left and
+     *         right hulls.
      */
     public static int[] findUpperTangent(List<Point> leftHull, List<Point> rightHull, int indexLeft, int indexRight) {
-        int nLeft = leftHull.size(); // Initialize sizes of hulls
-        int nRight = rightHull.size(); 
-        int upperLeft = indexLeft; 
-        int upperRight = indexRight; // Initialize starting indexes
+        int currentLeftIndex = indexLeft;
+        int currentRightIndex = indexRight;
         boolean tangentFound = false;
 
         while (!tangentFound) {
             tangentFound = true;
-            // Traverse through left hull to find upper tangent
-            while (checkCCW(rightHull.get(upperRight), leftHull.get(upperLeft),
-                    leftHull.get((upperLeft + 1) % nLeft)) > 0) {
-                upperLeft = (upperLeft + 1) % nLeft; // Move counterclockwise
+            // Traverse counterclockwise through left hull to find upper tangent
+            int updatedLeftIndex = moveLeftCCW(leftHull, rightHull.get(currentRightIndex), currentLeftIndex);
+            if (updatedLeftIndex != currentLeftIndex) {
                 tangentFound = false; // Keep searching
+                currentLeftIndex = updatedLeftIndex;
             }
-            // Traverse through right hull to find upper tangent
-            while (checkCCW(leftHull.get(upperLeft), rightHull.get(upperRight),
-                    rightHull.get((upperRight - 1 + nRight) % nRight)) < 0) {
-                upperRight = (upperRight - 1 + nRight) % nRight; // Move clockwise
+            // Traverse clockwise through right hull to find upper tangent
+            int updatedRightIndex = moveRightCW(rightHull, leftHull.get(currentLeftIndex), currentRightIndex);
+            if (updatedRightIndex != currentRightIndex) {
                 tangentFound = false; // Keep searching
+                currentRightIndex = updatedRightIndex;
             }
         }
-        return new int[] { upperLeft, upperRight };
+        return new int[] { currentLeftIndex, currentRightIndex };
     }
 
     /**
-     * This method finds the lower tangent of the convex boundary.
-     * This helps with the convex shape is still a polygon during the merging of the
-     * two hulls.
+     * This method finds the lower tangent between two convex hulls (leftHull and
+     * rightHull) during the merge step. The lower tangent is defined as the line
+     * segment that touches both hulls without intersecting their interiors, and
+     * lies below all other points in both hulls.
+     * 
+     * This method begins with a starting point from each hull and iteratively
+     * refines the points to find the upper tangent by moving along the hulls in the
+     * appropriate direction (clockwise for the left hull, counterclockwise for the
+     * right hull). This helps to make sure convexity of the Convex Hull has no .
      * 
      * @param leftHull   Convex Hull of the left subset of n points (left half).
      * @param rightHull  Convex Hull of the right subset of n points (right half).
      * @param indexLeft  Index of the "east" most point in the left hull.
      * @param indexRight Index of the "west" most point in the right hull.
-     * @return An array containing two indices (points) of the lower tangent in the
-     *         left and right hulls.
+     * @return An array containing two points of the lower tangent in the left and
+     *         right hulls.
      */
     public static int[] findLowerTangent(List<Point> leftHull, List<Point> rightHull, int indexLeft, int indexRight) {
-        int nLeft = leftHull.size(); 
-        int nRight = rightHull.size(); // Initialize sizes of hulls
-        int lowerLeft = indexLeft; 
-        int lowerRight = indexRight; // Initialize starting indexes
+        int currentLeftIndex = indexLeft;
+        int currentRightIndex = indexRight;
         boolean tangentFound = false;
 
         while (!tangentFound) {
             tangentFound = true;
             // Traverse clockwise through the left hull to find the lower tangent
-            while (checkCCW(rightHull.get(lowerRight), leftHull.get(lowerLeft),
-                    leftHull.get((lowerLeft - 1 + nLeft) % nLeft)) < 0) {
-                lowerLeft = (lowerLeft - 1 + nLeft) % nLeft; // Move clockwise
-                tangentFound = false; // Keep searching
+            int updatedLeftIndex = moveLeftCW(leftHull, rightHull.get(currentRightIndex),
+                    currentLeftIndex);
+            if (updatedLeftIndex != currentLeftIndex) {
+                tangentFound = false;
+                currentLeftIndex = updatedLeftIndex;
             }
             // Traverse counterclockwise through the right hull to find the lower tangent
-            while (checkCCW(leftHull.get(lowerLeft), rightHull.get(lowerRight),
-                    rightHull.get((lowerRight + 1) % nRight)) > 0) {
-                lowerRight = (lowerRight + 1) % nRight; // Move counterclockwise
-                tangentFound = false; // Keep searching
+            int updatedRightIndex = moveRightCCW(rightHull, leftHull.get(currentLeftIndex),
+                    currentRightIndex);
+            if (updatedRightIndex != currentRightIndex) {
+                tangentFound = false;
+                currentRightIndex = updatedRightIndex;
             }
         }
-        return new int[] { lowerLeft, lowerRight };
+        return new int[] { currentLeftIndex, currentRightIndex };
     }
 
     /**
-     * This method allows to merge the two halves into a single Convex Hull
-     * by finding the upper and lower tangents and combining the points between
-     * the tangents.
+     * Method that adds points from a given hull between two tangents to the merged
+     * hull list.
+     *
+     * @param mergedHull List to which points will be added to the merged convex
+     *                   hull.
+     * @param hull       Hull from which points will be added.
+     * @param startIndex Index to start adding points from.
+     * @param endIndex   Index to stop adding points at.
+     */
+    public static void addPoints(List<Point> mergedHull, List<Point> hull, int startIndex, int endIndex) {
+        int n = hull.size();
+        int currentIndex = startIndex;
+
+        // Traverse through the hull, adding points until reaching the endIndex
+        while (true) {
+            mergedHull.add(hull.get(currentIndex));
+            if (currentIndex == endIndex) {
+                break; // Stop when the end index is reached
+            }
+            currentIndex = (currentIndex + 1) % n; // Move to the next point
+        }
+    }
+
+    /**
+     * This method merges two halves into a single Convex Hull
+     * by finding the upper and lower tangents between the two hulls.
      *
      * @param leftHull  Convex Hull of the left subset of n points (left half).
      * @param rightHull Convex Hull of the right subset of n points (right half).
@@ -180,19 +287,11 @@ public class ConvexHull {
         int lowerLeft = lowerTangent[0];
         int lowerRight = lowerTangent[1];
 
-        List<Point> mergedHull = new ArrayList<>(); // Hold final Convex Hull
+        List<Point> mergedHull = new LinkedList<>(); // Hold final Convex Hull
 
-        // Adds up all the points from the left hull between tangents
-        for (int i = upperLeft; i != lowerLeft; i = (i + 1) % leftHull.size()) {
-            mergedHull.add(leftHull.get(i));
-        }
-        mergedHull.add(leftHull.get(lowerLeft)); // Add lower tangent point
-
-        // Adds up all the points from the right hull between the tangents
-        for (int i = lowerRight; i != upperRight; i = (i + 1) % rightHull.size()) {
-            mergedHull.add(rightHull.get(i));
-        }
-        mergedHull.add(rightHull.get(upperRight)); // Add upper tangent point
+        // Adds up all the points from the left and right hulls between tangents
+        addPoints(mergedHull, leftHull, upperLeft, lowerLeft); // left hull
+        addPoints(mergedHull, rightHull, lowerRight, upperRight); // right hull
 
         return mergedHull;
     }
@@ -211,7 +310,7 @@ public class ConvexHull {
         // If there's only one or two points, they form the hull
         // This avoids stack overflow error
         if (indexRight - indexLeft + 1 <= 2) {
-            List<Point> hull = new ArrayList<>();
+            LinkedList<Point> hull = new LinkedList<>();
             for (int i = indexLeft; i <= indexLeft; i++) {
                 hull.add(points[i]);
             }

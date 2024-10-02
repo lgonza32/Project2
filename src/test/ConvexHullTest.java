@@ -89,24 +89,26 @@ public class ConvexHullTest {
 
         /**
          * Test for findUpperTangent() and findLowerTangent() methods.
+         * Helps determine if we are able to each respective tangent between a set of
+         * hulls correctly.
          */
         @Test
         public void testFindTangents() {
-                List<Point> leftHull = List.of(
+                List<Point> leftHull = new LinkedList<>(List.of(
                                 new Point(-6, -4), // index 0
                                 new Point(-4, -2), // index 1
                                 new Point(-2, 0), // index 2
                                 new Point(0, 2), // index 3
                                 new Point(2, 1) // index 4
-                );
+                ));
 
-                List<Point> rightHull = List.of(
+                List<Point> rightHull = new LinkedList<>(List.of(
                                 new Point(4, 3), // index 0
                                 new Point(6, 5), // index 1
                                 new Point(8, 4), // index 2
                                 new Point(10, 2), // index 3
                                 new Point(12, -1) // index 4
-                );
+                ));
 
                 int indexLeft = 4; // Index of the "east" most point in the left hull.
                 int indexRight = 0; // Index of the "west" most point in the right hull.
