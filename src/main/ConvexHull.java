@@ -20,15 +20,13 @@ import java.util.Comparator;
 public class ConvexHull {
 
     /**
-     * This method finds the upper tangent between two convex hulls (leftHull and
-     * rightHull) during the merge step. The upper tangent is defined as the line
-     * segment that touches both hulls without intersecting their interiors, and
-     * lies above all other points in both hulls.
+     * This method finds the upper tangent between two convex hulls during the merge
+     * step.
      * 
      * This method begins with a starting point from each hull and iteratively
      * refines the points to find the upper tangent by moving along the hulls in the
-     * appropriate direction (counterclockwise for the left hull, clockwise for the
-     * right hull).
+     * appropriate direction. This helps to make sure convexity of the Convex Hull
+     * has no concaving points.
      * 
      * @param leftHull   Convex Hull of the left subset of n points (left half).
      * @param rightHull  Convex Hull of the right subset of n points (right half).
@@ -63,15 +61,13 @@ public class ConvexHull {
     }
 
     /**
-     * This method finds the lower tangent between two convex hulls (leftHull and
-     * rightHull) during the merge step. The lower tangent is defined as the line
-     * segment that touches both hulls without intersecting their interiors, and
-     * lies below all other points in both hulls.
+     * This method finds the lower tangent between two convex hulls during the merge
+     * step.
      * 
      * This method begins with a starting point from each hull and iteratively
      * refines the points to find the upper tangent by moving along the hulls in the
-     * appropriate direction (clockwise for the left hull, counterclockwise for the
-     * right hull). This helps to make sure convexity of the Convex Hull has no .
+     * appropriate direction. This helps to make sure convexity of the Convex Hull
+     * has no concaving points.
      * 
      * @param leftHull   Convex Hull of the left subset of n points (left half).
      * @param rightHull  Convex Hull of the right subset of n points (right half).
