@@ -138,7 +138,7 @@ public class ConvexHullUtil {
      *                      half).
      * @param leftHullPoint A point in the left hull.
      * @param currentIndex  Current index in the left hull.
-     * @return The updated index in the left hull.
+     * @return The updated index in the right hull.
      */
     public static int moveRightCW(List<Point> rightHull, Point leftHullPoint, int currentIndex) {
         int nRight = rightHull.size();

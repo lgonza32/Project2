@@ -6,8 +6,9 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 /**
- * Implements the Convex Hull algorithm using Divide and Conquer.
- * This class provides methods to find and merge Convex Hulls on a 2D plane.
+ * This class implements the Convex Hull algorithm using Divide and Conquer with
+ * methods to find and merge Convex Hulls on a 2D plane.
+ * 
  * The scheme behind Convex Hull, Divide and Conquer for a set P of n points:
  * <ul>
  * <li>Divide those set of points into two subsets by finding a median O(1).
@@ -44,18 +45,18 @@ public class ConvexHull {
         while (!tangentFound) {
             tangentFound = true;
             // Traverse counterclockwise through left hull to find upper tangent
-            int updatedLeftIndex = ConvexHullUtil.moveLeftCCW(leftHull, rightHull.get(currentRightIndex),
+            int nextLeftIndex = ConvexHullUtil.moveLeftCCW(leftHull, rightHull.get(currentRightIndex),
                     currentLeftIndex);
-            if (updatedLeftIndex != currentLeftIndex) {
+            if (nextLeftIndex != currentLeftIndex) {
                 tangentFound = false; // Keep searching
-                currentLeftIndex = updatedLeftIndex;
+                currentLeftIndex = nextLeftIndex;
             }
             // Traverse clockwise through right hull to find upper tangent
-            int updatedRightIndex = ConvexHullUtil.moveRightCW(rightHull, leftHull.get(currentLeftIndex),
+            int nextRightIndex = ConvexHullUtil.moveRightCW(rightHull, leftHull.get(currentLeftIndex),
                     currentRightIndex);
-            if (updatedRightIndex != currentRightIndex) {
+            if (nextRightIndex != currentRightIndex) {
                 tangentFound = false; // Keep searching
-                currentRightIndex = updatedRightIndex;
+                currentRightIndex = nextRightIndex;
             }
         }
         return new int[] { currentLeftIndex, currentRightIndex };
@@ -87,18 +88,18 @@ public class ConvexHull {
         while (!tangentFound) {
             tangentFound = true;
             // Traverse clockwise through the left hull to find the lower tangent
-            int updatedLeftIndex = ConvexHullUtil.moveLeftCW(leftHull, rightHull.get(currentRightIndex),
+            int nextLeftIndex = ConvexHullUtil.moveLeftCW(leftHull, rightHull.get(currentRightIndex),
                     currentLeftIndex);
-            if (updatedLeftIndex != currentLeftIndex) {
+            if (nextLeftIndex != currentLeftIndex) {
                 tangentFound = false;
-                currentLeftIndex = updatedLeftIndex;
+                currentLeftIndex = nextLeftIndex;
             }
             // Traverse counterclockwise through the right hull to find the lower tangent
-            int updatedRightIndex = ConvexHullUtil.moveRightCCW(rightHull, leftHull.get(currentLeftIndex),
+            int nextRightIndex = ConvexHullUtil.moveRightCCW(rightHull, leftHull.get(currentLeftIndex),
                     currentRightIndex);
-            if (updatedRightIndex != currentRightIndex) {
+            if (nextRightIndex != currentRightIndex) {
                 tangentFound = false;
-                currentRightIndex = updatedRightIndex;
+                currentRightIndex = nextRightIndex;
             }
         }
         return new int[] { currentLeftIndex, currentRightIndex };
