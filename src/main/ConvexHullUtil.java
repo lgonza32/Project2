@@ -2,6 +2,11 @@ package main;
 
 import java.util.List;
 
+/**
+ * Helper class for ConvexHull.java.
+ * This class contantains helper methods that do specific operations to help
+ * compute the Convex Hull.
+ */
 public class ConvexHullUtil {
 
     /**

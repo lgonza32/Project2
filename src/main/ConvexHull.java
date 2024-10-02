@@ -16,7 +16,6 @@ import java.util.Comparator;
  * </ul>
  * The Overall Time Complexity should be: O(n log n).
  */
-
 public class ConvexHull {
 
     /**
@@ -200,7 +199,7 @@ public class ConvexHull {
      * @param points An array of points.
      * @return A list of points that show the Convex Hull.
      */
-    public static List<Point> convexHull(Point[] points) {
+    public static LinkedList<Point> convexHull(Point[] points) {
         // Sort the n points by x coords to make finding median easier
         Arrays.sort(points, Comparator.comparingInt(p -> p.x));
 
