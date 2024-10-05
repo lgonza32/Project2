@@ -87,14 +87,14 @@ public class ConvexHull {
             int nextLeftIndex = ConvexHullUtil.moveLeftCW(leftHull, rightHull.get(currentRightIndex),
                     currentLeftIndex);
             if (nextLeftIndex != currentLeftIndex) {
-                tangentFound = false;
+                tangentFound = false; // Keep searching
                 currentLeftIndex = nextLeftIndex;
             }
             // Traverse counterclockwise through the right hull to find the lower tangent
             int nextRightIndex = ConvexHullUtil.moveRightCCW(rightHull, leftHull.get(currentLeftIndex),
                     currentRightIndex);
             if (nextRightIndex != currentRightIndex) {
-                tangentFound = false;
+                tangentFound = false; // Keep searching
                 currentRightIndex = nextRightIndex;
             }
         }
